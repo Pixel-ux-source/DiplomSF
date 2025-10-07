@@ -8,7 +8,7 @@
 import UIKit
 
 struct MainBuilder: BuilderProtocol {
-    static func build(dataManager: PopularManager) -> MainController {
+    static func build(dataManager: CoreDataManager) -> MainController {
         let view = MainController()
         let presenter = MainPresenter(networkService: NetworkService(), dataManager: dataManager, view: view)
         view.presenter = presenter

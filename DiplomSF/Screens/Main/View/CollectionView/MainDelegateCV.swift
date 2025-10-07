@@ -8,5 +8,11 @@
 import UIKit
 
 final class MainDelegateCV: NSObject, UICollectionViewDelegate {
+    var popularFilmsModel: [PopularFilmsModel] = []
+    var coordinator: CoordinatorProtocol!
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let object = popularFilmsModel[indexPath.row]
+        coordinator.openDetailScreen(for: object)
+    }
 }

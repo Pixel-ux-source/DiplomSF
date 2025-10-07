@@ -15,6 +15,7 @@ struct PopularMapping: MappingProtocol {
             
             popularFilmObject.id = Int64(filmDTO.id)
             popularFilmObject.originalTitle = filmDTO.originalTitle
+            popularFilmObject.title = filmDTO.title
             popularFilmObject.posterPath = filmDTO.posterPath
             popularFilmObject.releaseDate = filmDTO.releaseDate
             popularFilmObject.overview = filmDTO.overview

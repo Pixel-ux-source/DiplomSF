@@ -8,6 +8,10 @@
 import Foundation
 import CoreData
 
+protocol IdentifiableDTO: Decodable {
+    var id: Int { get }
+}
+
 struct PopularFilms: Decodable {
     let page: Int32
     let results: [Film]
@@ -15,7 +19,7 @@ struct PopularFilms: Decodable {
     let totalResults: Int64
 }
 
-struct Film: Decodable {
+struct Film: IdentifiableDTO {
     let adult: Bool
     let backdropPath: String?
     let genreIds: [Int]

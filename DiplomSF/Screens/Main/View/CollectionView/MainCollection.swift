@@ -31,7 +31,3 @@ final class MainCollection: UICollectionView {
         backgroundColor = .systemBackground
     }
 }
-
-enum SectionMainCV: Int, CaseIterable {
-    case popularFilms
-}

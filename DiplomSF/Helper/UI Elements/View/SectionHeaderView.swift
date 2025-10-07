@@ -46,9 +46,9 @@ final class SectionHeaderView: UICollectionReusableView {
     // MARK: – Setup's
     private func setupTitleLabel() {
         titleLabel.pin
-            .top(8)
+            .top(24)
             .horizontally(8)
-            .height(32)
+            .height(28)
     }
 }
 

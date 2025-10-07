@@ -20,6 +20,7 @@ extension Popular {
 
     @NSManaged public var id: Int64
     @NSManaged public var originalTitle: String?
+    @NSManaged public var title: String?
     @NSManaged public var posterPath: String?
     @NSManaged public var releaseDate: String?
     @NSManaged public var overview: String?

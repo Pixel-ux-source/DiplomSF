@@ -11,7 +11,7 @@ import Alamofire
 enum APIEndpoint {
     private static let baseURLString = "https://api.themoviedb.org/3"
     
-    case getPopular
+    case getPopular(language: String, page: Int)
     
     var url: URL? {
         switch self {
@@ -29,11 +29,13 @@ enum APIEndpoint {
         }
     }
     
+    // Можно добавить переключатель языка в профиле после auth. Но тогда нужно каждый раз делать новый запрос.
     var params: Parameters {
         switch self {
-        case .getPopular:
+        case .getPopular(let language, let page):
             return [
-                "language":"en-US"
+                "language":language,
+                "page":page
             ]
         }
     }

@@ -7,6 +7,7 @@
 
 import UIKit
 import SDWebImage
+import SkeletonView
 
 final class MainDataSource: NSObject, UICollectionViewDataSource {
     var popularFilmsModel: [PopularFilmsModel] = []
@@ -25,17 +26,17 @@ final class MainDataSource: NSObject, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PopularFilmCell.id, for: indexPath) as? PopularFilmCell else { fatalError("ERROR_DequeueReusableCell") }
         let raiting = popularFilmsModel[indexPath.row].voteAverage
-        let title = popularFilmsModel[indexPath.row].originalTitle
+        let title = popularFilmsModel[indexPath.row].title
         let genre = popularFilmsModel[indexPath.row].overview
         let imagePath = popularFilmsModel[indexPath.row].posterPath
         
         cell.setUI(raiting: raiting, title: title, genre: genre)
         
         let image = cell.getImageView()
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(imagePath)") else { return cell }
+        let url = URL(string: "https://image.tmdb.org/t/p/w500/\(imagePath)")
         
-        let placeholderImage = UIImage(systemName: "photo")
-        image.sd_setImage(with: url, placeholderImage: placeholderImage)
+        image.sd_setImage(with: url,
+                          placeholderImage: nil)
         image.tintColor = .systemGray
         
         return cell
@@ -46,7 +47,7 @@ final class MainDataSource: NSObject, UICollectionViewDataSource {
         
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeaderView.id, for: indexPath) as? SectionHeaderView else { return UICollectionReusableView() }
         
-        header.configure(with: "Popular")
+        header.configure(with: "Популярное")
         return header
     }
 }

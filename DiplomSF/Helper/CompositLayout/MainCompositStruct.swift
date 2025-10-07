@@ -7,13 +7,16 @@
 
 import UIKit
 
-struct LayoutProvider {
-    static func loadLayout() -> UICollectionViewLayout {
+// MARK: – Main Collection
+struct MainLayoutProvider {
+    static func loadLayout(onReachEnd: @escaping () -> Void) -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
             guard let sectionMain = SectionMainCV(rawValue: sectionIndex) else { return nil }
             switch sectionMain {
             case .popularFilms:
-                return PopularFilmsSection().layoutSection()
+                var section = PopularFilmsSection()
+                section.onReachEnd = onReachEnd
+                return section.layoutSection()
             }
         }
         return layout
@@ -21,6 +24,8 @@ struct LayoutProvider {
 }
 
 struct PopularFilmsSection: CompositProtocol {
+    var onReachEnd: (() -> Void)?
+
     func layoutSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
                                               heightDimension: .absolute(350))
@@ -43,6 +48,17 @@ struct PopularFilmsSection: CompositProtocol {
                                                                         elementKind: UICollectionView.elementKindSectionHeader,
                                                                         alignment: .top)
         section.boundarySupplementaryItems = [sectionHeader]
+        
+        section.visibleItemsInvalidationHandler = { items, offset, environment in
+            let maxOffset = environment.container.contentSize.width - environment.container.contentSize.width * 1.1
+            if offset.x > maxOffset {
+                onReachEnd?()
+            }
+        }
         return section
     }
+}
+
+enum SectionMainCV: Int, CaseIterable {
+    case popularFilms
 }

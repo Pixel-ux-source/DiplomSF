@@ -8,6 +8,6 @@
 import UIKit
 
 protocol BuilderProtocol {
-    static func build(dataManager: PopularManager) -> vc
+    static func build(dataManager: CoreDataManager) -> vc
     associatedtype vc: UIViewController
 }

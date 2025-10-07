@@ -1,13 +1,13 @@
 //
-//  PopularFilmsModel.swift
+//  SearchModel.swift
 //  DiplomSF
 //
-//  Created by Алексей on 10.09.2025.
+//  Created by Алексей on 01.10.2025.
 //
 
-import UIKit
+import Foundation
 
-struct PopularFilmsModel: ModelsProtocol {
+struct SearchModel: ModelsProtocol {
     let originalTitle: String
     let title: String
     let posterPath: String

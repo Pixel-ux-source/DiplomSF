@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let container = appDelegate.persistentContainer
-        let dataManager = PopularManager(container: container)
+        let dataManager = CoreDataManager(container: container)
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         

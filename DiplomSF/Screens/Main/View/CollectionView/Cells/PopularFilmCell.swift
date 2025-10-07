@@ -35,7 +35,7 @@ final class PopularFilmCell: UICollectionViewCell {
     // MARK: – Initializate
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
-        confgiureView()
+        configureView()
         setupUI()
     }
     
@@ -52,7 +52,7 @@ final class PopularFilmCell: UICollectionViewCell {
     }
     
     // MARK: – Configuration's
-    private func confgiureView() {
+    private func configureView() {
         contentView.backgroundColor = .systemBackground
     }
     
