@@ -34,7 +34,8 @@ final class MainPresenter: MainPresenterProtocol {
     
     // Подумать как иплементировать сюда update
     private func loadModel() {
-        dataManager.fetch(of: Popular.self) { [weak self] result in
+        let sortDescriptor = NSSortDescriptor(key: "id", ascending: false)
+        dataManager.fetch(of: Popular.self, sortDescriptors: [sortDescriptor]) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let entity):
@@ -84,10 +85,11 @@ final class MainPresenter: MainPresenterProtocol {
         loadNextPage(currentPage: page)
     }
     
+    // Подумать как заменить updateModel. Плохо что лоад и обновление сразу всегда
     func loadData() {
         page = 1
         loadModel()
-        updateModel()
+//        updateModel()
     }
     
     private func loadNextPage(currentPage: Int) {

@@ -8,7 +8,6 @@
 import UIKit
 
 final class MainCollection: UICollectionView {
-    
     // MARK: – Initializate
     override init(frame: CGRect = .zero, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
