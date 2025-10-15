@@ -20,7 +20,7 @@ final class DetailGenreLabel: UILabel {
     
     // MARK: – Configuration's
     private func configureElement() {
-        textColor = .lightGray
+        textColor = .darkGray
         font = .systemFont(ofSize: 16, weight: .medium)
         numberOfLines = 0
         textAlignment = .left

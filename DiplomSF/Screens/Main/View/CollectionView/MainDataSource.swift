@@ -7,7 +7,6 @@
 
 import UIKit
 import SDWebImage
-import SkeletonView
 
 final class MainDataSource: NSObject, UICollectionViewDataSource {
     var popularFilmsModel: [PopularFilmsModel] = []
@@ -25,20 +24,10 @@ final class MainDataSource: NSObject, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PopularFilmCell.id, for: indexPath) as? PopularFilmCell else { fatalError("ERROR_DequeueReusableCell") }
-        let raiting = popularFilmsModel[indexPath.row].voteAverage
-        let title = popularFilmsModel[indexPath.row].title
-        let genre = popularFilmsModel[indexPath.row].overview
-        let imagePath = popularFilmsModel[indexPath.row].posterPath
         
-        cell.setUI(raiting: raiting, title: title, genre: genre)
-        
-        let image = cell.getImageView()
-        let url = URL(string: "https://image.tmdb.org/t/p/w500/\(imagePath)")
-        
-        image.sd_setImage(with: url,
-                          placeholderImage: nil)
-        image.tintColor = .systemGray
-        
+        let model = popularFilmsModel[indexPath.item]
+        cell.setUI(with: model)
+
         return cell
     }
     

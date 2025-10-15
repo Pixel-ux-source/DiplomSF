@@ -7,11 +7,13 @@
 
 import UIKit
 import PinLayout
+import SDWebImage
 
 final class PopularFilmCell: UICollectionViewCell {
     // MARK: – UI Element's
     private lazy var imageView: UIImageView = {
         let imageView = ImagePoster()
+        imageView.tintColor = .systemGray
         return imageView
     }()
     
@@ -49,6 +51,15 @@ final class PopularFilmCell: UICollectionViewCell {
         setupRaitingView()
         setupTitleLabel()
         setupGenreLabel()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.sd_cancelCurrentImageLoad()
+        imageView.image = nil
+        titleLabel.text = nil
+        genreLabel.text = nil
+        raitingView.configureRaiting(with: 0)
     }
     
     // MARK: – Configuration's
@@ -94,17 +105,18 @@ final class PopularFilmCell: UICollectionViewCell {
     }
     
     // MARK: – Set UI
-    func setUI(raiting: Double, title: String, genre: String) {
-        raitingView.configureRaiting(with: raiting)
-        titleLabel.text = title
-        genreLabel.text = genre
+    func setUI(with model: PopularFilmsModel) {
+        raitingView.configureRaiting(with: model.voteAverage)
+        titleLabel.text = model.title
+        genreLabel.text = model.overview
         
-        setNeedsLayout()
-        layoutIfNeeded()
-    }
-    
-    // MARK: – Getter
-    func getImageView() -> UIImageView {
-        return imageView
+        let imagePath = model.posterPath
+        let url = URL(string: "https://image.tmdb.org/t/p/w500/\(imagePath)")
+        imageView.sd_setImage(with: url,
+                          placeholderImage: nil,
+                          options: [.continueInBackground, .highPriority, .avoidAutoSetImage, .scaleDownLargeImages]) { [weak self] image, _, _, _ in
+            guard let self else { return }
+            self.imageView.image = image
+        }
     }
 }

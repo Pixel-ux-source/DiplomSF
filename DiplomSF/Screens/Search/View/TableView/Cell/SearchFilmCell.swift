@@ -7,6 +7,7 @@
 
 import UIKit
 import PinLayout
+import SDWebImage
 
 final class SearchFilmCell: UITableViewCell {
     // MARK: – Cell ID
@@ -83,14 +84,17 @@ final class SearchFilmCell: UITableViewCell {
         titleLabel.pin.top(startY)
         genreLabel.pin.top(titleLabel.frame.maxY + 2)
     }
-    
-    // MARK: – Getter
-    func getPhotoImage() -> UIImageView {
-        return photoImage
-    }
-    
-    func setUI(title: String, genre: String) {
+
+    func configure(title: String, genre: String, posterPath: String) {
         titleLabel.text = title
         genreLabel.text = genre
+        if let url = URL(string: "https://image.tmdb.org/t/p/w500/\(posterPath)") {
+            photoImage.sd_setImage(with: url, placeholderImage: nil, options: [.avoidAutoSetImage, .scaleDownLargeImages]) { [weak self] image, _, _, _ in
+                guard let self else { return }
+                self.photoImage.image = image
+            }
+        } else {
+            photoImage.image = nil
+        }
     }
 }

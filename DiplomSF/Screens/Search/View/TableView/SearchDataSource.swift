@@ -22,13 +22,8 @@ final class SearchDataSource: NSObject, UITableViewDataSource {
         let title = object.title
         let genre = object.overview
         let imagePath = object.posterPath
-                
-        cell.setUI(title: title, genre: genre)
-        
-        let image = cell.getPhotoImage()
-        let url = URL(string: "https://image.tmdb.org/t/p/w500/\(imagePath)")
 
-        image.sd_setImage(with: url)
+        cell.configure(title: title, genre: genre, posterPath: imagePath)
         
         return cell
     }

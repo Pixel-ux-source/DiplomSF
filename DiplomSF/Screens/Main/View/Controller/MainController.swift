@@ -10,11 +10,10 @@
 import UIKit
 import CoreData
 import PinLayout
-import SkeletonView
 
 final class MainController: UIViewController {
     // MARK: – Instance's
-    private var collectionView: MainCollection!
+    private var collectionView = MainCollection(collectionViewLayout: MainLayoutProvider.loadLayout())
     
     private let dataSource = MainDataSource()
     private let delegate = MainDelegateCV()
@@ -29,9 +28,7 @@ final class MainController: UIViewController {
         super.viewDidLoad()
         configureView()
         configureCollection()
-        configureSkeleton()
         
-        collectionView.showAnimatedSkeleton(usingColor: .silver, animation: .none)
         presenter.loadData()
     }
     
@@ -47,16 +44,16 @@ final class MainController: UIViewController {
     
     // MARK: – Configuration's
     private func configureCollection() {
-        collectionView = MainCollection(collectionViewLayout: MainLayoutProvider.loadLayout(onReachEnd: { [weak self] in
-            guard let self else { return }
-            self.presenter.loadPage()
-        }))
-        
         view.addSubview(collectionView)
         
         collectionView.dataSource = dataSource
         collectionView.delegate = delegate
         delegate.coordinator = coordinator
+        
+        delegate.onReachEnd = { [weak self] in
+            guard let self else { return }
+            self.presenter.loadPage()
+        }
         
         collectionView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshAction), for: .valueChanged)
@@ -66,10 +63,6 @@ final class MainController: UIViewController {
         collectionView.pin
             .vertically()
             .horizontally()
-    }
-    
-    private func configureSkeleton() {
-        collectionView.isSkeletonable = true
     }
     
     private func configureView() {
@@ -82,7 +75,6 @@ final class MainController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.presenter.updateData()
             self.collectionView.setContentOffset(.zero, animated: true)
-            self.collectionView.reloadData()
             self.refreshControl.endRefreshing()
         }
     }
@@ -93,8 +85,9 @@ extension MainController: MainViewProtocol {
     func loadFilmsData(_ data: [PopularFilmsModel]) {
         self.dataSource.popularFilmsModel = data
         delegate.popularFilmsModel = dataSource.popularFilmsModel
+        print("All ids:", dataSource.popularFilmsModel.map { $0.id })
         
-        collectionView.hideSkeleton()
         collectionView.reloadData()
     }
+    
 }

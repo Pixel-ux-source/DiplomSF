@@ -9,14 +9,12 @@ import UIKit
 
 // MARK: – Main Collection
 struct MainLayoutProvider {
-    static func loadLayout(onReachEnd: @escaping () -> Void) -> UICollectionViewLayout {
+    static func loadLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
             guard let sectionMain = SectionMainCV(rawValue: sectionIndex) else { return nil }
             switch sectionMain {
             case .popularFilms:
-                var section = PopularFilmsSection()
-                section.onReachEnd = onReachEnd
-                return section.layoutSection()
+                return PopularFilmsSection().layoutSection()
             }
         }
         return layout
@@ -25,16 +23,16 @@ struct MainLayoutProvider {
 
 struct PopularFilmsSection: CompositProtocol {
     var onReachEnd: (() -> Void)?
-
+    
     func layoutSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(180),
                                               heightDimension: .absolute(350))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(180),
                                                heightDimension: .absolute(350))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 1)
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
@@ -48,13 +46,6 @@ struct PopularFilmsSection: CompositProtocol {
                                                                         elementKind: UICollectionView.elementKindSectionHeader,
                                                                         alignment: .top)
         section.boundarySupplementaryItems = [sectionHeader]
-        
-        section.visibleItemsInvalidationHandler = { items, offset, environment in
-            let maxOffset = environment.container.contentSize.width - environment.container.contentSize.width * 1.1
-            if offset.x > maxOffset {
-                onReachEnd?()
-            }
-        }
         return section
     }
 }

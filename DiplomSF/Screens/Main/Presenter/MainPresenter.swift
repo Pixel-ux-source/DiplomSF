@@ -34,7 +34,8 @@ final class MainPresenter: MainPresenterProtocol {
     
     // Подумать как иплементировать сюда update
     private func loadModel() {
-        dataManager.fetch(of: Popular.self) { [weak self] result in
+        let sortDescriptor = NSSortDescriptor(key: "id", ascending: false)
+        dataManager.fetch(of: Popular.self, sortDescriptors: [sortDescriptor]) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let entity):
@@ -50,6 +51,7 @@ final class MainPresenter: MainPresenterProtocol {
                                 case .success(let film):
                                     DispatchQueue.main.async {
                                         self.model = film.map(PopularFilmsModel.init)
+                                        self.model.sort { $0.id > $1.id }
                                         self.view?.loadFilmsData(self.model)
                                     }
                                 case .failure(let error):
@@ -63,6 +65,7 @@ final class MainPresenter: MainPresenterProtocol {
                 } else {
                     DispatchQueue.main.async {
                         self.model = entity.map(PopularFilmsModel.init)
+                        self.model.sort { $0.id > $1.id }
                         self.view?.loadFilmsData(self.model)
                     }
                 }
@@ -82,12 +85,14 @@ final class MainPresenter: MainPresenterProtocol {
         page += 1
         isLoading = true
         loadNextPage(currentPage: page)
+        print(page)
     }
     
+    // Подумать как заменить updateModel. Плохо что лоад и обновление сразу всегда
     func loadData() {
         page = 1
         loadModel()
-        updateModel()
+//        updateModel()
     }
     
     private func loadNextPage(currentPage: Int) {
