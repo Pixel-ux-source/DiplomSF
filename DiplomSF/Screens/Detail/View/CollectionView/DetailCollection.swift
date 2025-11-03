@@ -19,6 +19,8 @@ final class DetailCollection: UICollectionView {
     
     // MARK: – Configuration's
     private func registerCell() {
-        register(InfoCell.self, forCellWithReuseIdentifier: InfoCell.id)
+        register(InfoDetailCell.self, forCellWithReuseIdentifier: InfoDetailCell.id)
+        register(FramesDetailCell.self, forCellWithReuseIdentifier: FramesDetailCell.id)
+        register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.id)
     }
 }

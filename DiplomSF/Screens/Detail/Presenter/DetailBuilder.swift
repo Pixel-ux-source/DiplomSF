@@ -10,7 +10,7 @@ import Foundation
 struct DetailBuilder {
     static func build(dataManager: CoreDataManager, model: DetailModel) -> DetailController {
         let view = DetailController()
-        let presetner = DetailPresenter(view: view, model: model, dataManager: dataManager, networkService: NetworkService())
+        let presetner = DetailPresenter(view: view, model: model, dataManager: dataManager, networkService: NetworkService(), userSettings: UserSettings())
         view.presenter = presetner
         
         return view

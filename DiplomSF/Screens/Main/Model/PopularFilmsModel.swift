@@ -15,14 +15,16 @@ struct PopularFilmsModel: ModelsProtocol {
     let overview: String
     let voteAverage: Double
     let id: Int64
+    var isFavorite: Bool
     
     init(model: Popular) {
         self.id = model.id
         self.originalTitle = model.originalTitle ?? "Empty"
-        self.title = model.title ?? "Empty"
+        self.title = model.title ?? model.originalTitle ?? "Empty"
         self.posterPath = model.posterPath ?? "Empty"
         self.releaseDate = model.releaseDate ?? "Empty"
         self.overview = model.overview ?? "Empty"
         self.voteAverage = model.voteAverage
+        self.isFavorite = false
     }
 }

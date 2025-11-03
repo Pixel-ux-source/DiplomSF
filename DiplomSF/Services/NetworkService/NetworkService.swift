@@ -52,7 +52,7 @@ final class NetworkService: NetworkProtocol {
     }
     
     // MARK: – HTTP Method's
-    func get<T:Decodable>(of type: T.Type, endpoint: APIEndpoint, method: HTTPMethod, parameters: Alamofire.Parameters? = nil, headers: Alamofire.HTTPHeaders? = nil, completion: @escaping (Result<T, Error>) -> Void) {
+    func get<T:Decodable>(of type: T.Type, endpoint: APIEndpoint, method: HTTPMethod = .get, parameters: Alamofire.Parameters? = nil, headers: Alamofire.HTTPHeaders? = nil, completion: @escaping (Result<T, Error>) -> Void) {
         request(of: type, endpoint: endpoint, method: method, parameters: parameters, headers: headers, completion: completion)
     }
 }

@@ -15,6 +15,7 @@ struct SearchModel: ModelsProtocol {
     let overview: String
     let voteAverage: Double
     let id: Int64
+    var isFavorite: Bool
     
     init(model: Popular) {
         self.id = model.id
@@ -24,5 +25,6 @@ struct SearchModel: ModelsProtocol {
         self.releaseDate = model.releaseDate ?? "Empty"
         self.overview = model.overview ?? "Empty"
         self.voteAverage = model.voteAverage
+        self.isFavorite = false
     }
 }

@@ -22,5 +22,7 @@ final class ImagePoster: UIImageView {
     private func configure() {
         contentMode = .scaleAspectFill
         clipsToBounds = true
+        isUserInteractionEnabled = true
+
     }
 }

@@ -21,8 +21,8 @@ final class DetailTitleLabel: UILabel {
     // MARK: – Configuration's
     private func configureElement() {
         textColor = .black
-        font = .systemFont(ofSize: 26, weight: .bold)
+        font = .systemFont(ofSize: 32, weight: .bold)
         numberOfLines = 0
-        textAlignment = .left
+        textAlignment = .center
     }
 }

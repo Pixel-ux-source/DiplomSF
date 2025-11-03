@@ -12,7 +12,7 @@ protocol IdentifiableDTO: Decodable {
     var id: Int { get }
 }
 
-struct PopularFilms: Decodable {
+struct PopularFilmsResponse: Decodable {
     let page: Int32
     let results: [Film]
     let totalPages: Int64

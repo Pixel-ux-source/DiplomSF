@@ -8,77 +8,69 @@
 import UIKit
 
 protocol DetailViewProtocol: AnyObject {
-    func loadModel(model: DetailModel)
+    func loadModel(model: DetailModel)    
 }
 
 protocol DetailPresenterProtocol: AnyObject {
-//    func updateData()
     func loadData()
+    func toggleFavorite()
+    func currentFavorite() -> (id: Int64, isFavorite: Bool)
 }
 
 final class DetailPresenter: DetailPresenterProtocol {
     // MARK: – Variable's
     private weak var view: DetailViewProtocol?
-    private let dataManager: CoreDataManager
-    private let networkService: NetworkService
     private(set) var model: DetailModel
     
     var page: Int = 1
     var language: String = "ru-RUS"
     var isLoading: Bool = false
     
-    init(view: DetailViewProtocol, model: DetailModel, dataManager: CoreDataManager, networkService: NetworkService) {
+    // MARK: – Instance's
+    private let dataManager: CoreDataManager
+    private let networkService: NetworkService
+    private let userSettings: UserSettings
+    
+    init(view: DetailViewProtocol, model: DetailModel, dataManager: CoreDataManager, networkService: NetworkService, userSettings: UserSettings) {
         self.view = view
         self.model = model
         self.dataManager = dataManager
         self.networkService = networkService
+        self.userSettings = userSettings
     }
     
     func loadData() {
-        self.view?.loadModel(model: self.model)
+        loadImages()
     }
     
-    // Как здесь сделать переключатель между разными объектами по эндпоинту?
+    private func loadImages() {
+        let endpoint = APIEndpoint.images(id: model.id)
+        networkService.get(of: MovieImagesResponse.self, endpoint: endpoint, parameters: endpoint.params, headers: endpoint.headers) { [weak self] result in
+            guard let self else { return } 
+            switch result {
+            case .success(let model):
+                let array = MovieImagesMapping.mapping(from: model)
+                DispatchQueue.main.async {
+                    self.model.images.append(contentsOf: array)
+                    self.view?.loadModel(model: self.model)
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    print("Ошибка при распаковке изображений кадров объекта: \(error)")
+                }
+            }
+        }
+    }
     
-//    private func updateModel() {
-//        let endpoint: APIEndpoint
-//        
-//        switch endpoint {
-//        case .getPopular(language: language, page: page):
-//            
-//            
-//        default:
-//            print("")
-//        }
-//        networkService.get(of: PopularFilms.self, endpoint: endpoint, method: .get, parameters: endpoint.params, headers: endpoint.headers) { [weak self] result in
-//            guard let self else { return }
-//            switch result {
-//            case .success(let filmPop):
-//                self.dataManager.sync(of: Popular.self, of: FilmsUpdateEnum.self, with: filmPop.results) { entity, dto in
-//                    return [
-//                        .originalTitle(dto.originalTitle ?? "Empty"),
-//                        .posterPath(dto.posterPath ?? "Empty"),
-//                        .overview(dto.overview ?? "Empty"),
-//                        .releaseDate(dto.releaseDate ?? "Empty"),
-//                        .backdropPath(dto.backdropPath ?? "Empty"),
-//                        .voteAverage(dto.voteAverage)
-//                    ]
-//                } completion: { [weak self] result in
-//                    guard let self else { return }
-//                    switch result {
-//                    case .success(()):
-//                        print("Успешное обновление данных")
-//                    case .failure(let error):
-//                        print("Ошибка обновления: \(error.localizedDescription)")
-//                    }
-//                }
-//            case .failure(let error):
-//                print("Ошибка сетевого запроса при обновлении: \(error.localizedDescription)")
-//            }
-//        }
-//    }
-    
-//    func updateData() {
-//        updateModel()
-//    }
+    func toggleFavorite() {
+        model.isFavorite.toggle()
+        userSettings.setFavorites(isFavorite: model.isFavorite, id: model.id)
+        print(model.isFavorite)
+        view?.loadModel(model: model)
+        NotificationCenter.default.post(name: .favoriteChanged, object: nil, userInfo: ["id": model.id, "isFavorite": model.isFavorite])
+    }
+
+    func currentFavorite() -> (id: Int64, isFavorite: Bool) {
+        return (id: model.id, isFavorite: model.isFavorite)
+    }
 }

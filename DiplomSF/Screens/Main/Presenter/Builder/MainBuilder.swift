@@ -10,7 +10,7 @@ import UIKit
 struct MainBuilder: BuilderProtocol {
     static func build(dataManager: CoreDataManager) -> MainController {
         let view = MainController()
-        let presenter = MainPresenter(networkService: NetworkService(), dataManager: dataManager, view: view)
+        let presenter = MainPresenter(networkService: NetworkService(), dataManager: dataManager, view: view, userSettings: UserSettings())
         view.presenter = presenter
         return view
     }

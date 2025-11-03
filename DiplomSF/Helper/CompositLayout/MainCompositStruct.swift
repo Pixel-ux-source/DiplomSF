@@ -14,7 +14,7 @@ struct MainLayoutProvider {
             guard let sectionMain = SectionMainCV(rawValue: sectionIndex) else { return nil }
             switch sectionMain {
             case .popularFilms:
-                return PopularFilmsSection().layoutSection()
+                return PopularFilmsSection().layoutInfoSection()
             }
         }
         return layout
@@ -24,11 +24,11 @@ struct MainLayoutProvider {
 struct PopularFilmsSection: CompositProtocol {
     var onReachEnd: (() -> Void)?
     
-    func layoutSection() -> NSCollectionLayoutSection {
+    func layoutInfoSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(180),
                                               heightDimension: .absolute(350))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
+        item.contentInsets = .init(top: 8, leading: 0, bottom: 8, trailing: 16)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(180),
                                                heightDimension: .absolute(350))
@@ -46,6 +46,7 @@ struct PopularFilmsSection: CompositProtocol {
                                                                         elementKind: UICollectionView.elementKindSectionHeader,
                                                                         alignment: .top)
         section.boundarySupplementaryItems = [sectionHeader]
+        
         return section
     }
 }

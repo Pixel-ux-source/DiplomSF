@@ -15,4 +15,5 @@ protocol ModelsProtocol {
     var releaseDate: String { get }
     var overview: String { get }
     var voteAverage: Double { get }
+    var isFavorite: Bool { get set }
 }

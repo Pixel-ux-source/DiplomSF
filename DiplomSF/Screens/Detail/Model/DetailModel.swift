@@ -15,8 +15,10 @@ struct DetailModel: ModelsProtocol {
     let overview: String
     let voteAverage: Double
     let id: Int64
+    var images: [String] = []
+    var isFavorite: Bool
     
-    init(originalTitle: String, title: String, posterPath: String, releaseDate: String, overview: String, voteAverage: Double, id: Int64) {
+    init(originalTitle: String, title: String, posterPath: String, releaseDate: String, overview: String, voteAverage: Double, id: Int64, isFavorite: Bool) {
         self.originalTitle = originalTitle
         self.title = title
         self.posterPath = posterPath
@@ -24,5 +26,6 @@ struct DetailModel: ModelsProtocol {
         self.overview = overview
         self.voteAverage = voteAverage
         self.id = id
+        self.isFavorite = isFavorite
     }
 }

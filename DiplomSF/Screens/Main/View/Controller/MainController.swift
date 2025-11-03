@@ -32,6 +32,15 @@ final class MainController: UIViewController {
         presenter.loadData()
     }
     
+    // Понять как запретить ротейт на главном / поиске / детальная карточка
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         configureConstraintsCollection()
@@ -42,6 +51,13 @@ final class MainController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate { _ in
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
     // MARK: – Configuration's
     private func configureCollection() {
         view.addSubview(collectionView)
@@ -49,6 +65,7 @@ final class MainController: UIViewController {
         collectionView.dataSource = dataSource
         collectionView.delegate = delegate
         delegate.coordinator = coordinator
+        dataSource.presenter = presenter
         
         delegate.onReachEnd = { [weak self] in
             guard let self else { return }
@@ -90,4 +107,19 @@ extension MainController: MainViewProtocol {
         collectionView.reloadData()
     }
     
+    func updateFavorite(at index: Int, isFavorite: Bool) {
+        guard index >= 0 && index < dataSource.popularFilmsModel.count else { return }
+        dataSource.popularFilmsModel[index].isFavorite = isFavorite
+        delegate.popularFilmsModel = dataSource.popularFilmsModel
+        let indexPath = IndexPath(item: index, section: 0)
+        if let cell = collectionView.cellForItem(at: indexPath) as? PopularFilmCell {
+            cell.setFavoriteSelected(isFavorite)
+        }
+    }
+}
+
+extension MainController: DetailControllerDelegate {
+    func detailController(_ viewController: DetailController, didChangeFavoriteFor id: Int64, isFavorite: Bool) {
+        presenter.setFavorite(id: id, isFavorite: isFavorite)
+    }
 }

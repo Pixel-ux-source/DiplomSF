@@ -8,5 +8,5 @@
 import UIKit
 
 protocol CompositProtocol {
-    func layoutSection() -> NSCollectionLayoutSection
+    func layoutInfoSection() -> NSCollectionLayoutSection
 }

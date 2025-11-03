@@ -17,16 +17,22 @@ final class PopularFilmCell: UICollectionViewCell {
         return imageView
     }()
     
+    // MARK: – Variable
+    var onFavoriteButtonTapped: (() -> Void)?
+    
     private lazy var raitingView = RaitingView()
+    
+    private lazy var favoriteView: FavoriteButtonView = {
+        let view = FavoriteButtonView { [weak self] in
+            guard let self else { return }
+            self.onFavoriteButtonTapped?()
+        }
+        return view
+    }()
     
     private lazy var titleLabel: UILabel = {
         let titleFilmLabel = TitleFilmLabel()
         return titleFilmLabel
-    }()
-    
-    private lazy var genreLabel: UILabel = {
-        let genreFilmLabel = GenreFilmLabel()
-        return genreFilmLabel
     }()
     
     // MARK: – Cell ID
@@ -49,8 +55,8 @@ final class PopularFilmCell: UICollectionViewCell {
         super.layoutSubviews()
         setupImageView()
         setupRaitingView()
+        setupFavoriteView()
         setupTitleLabel()
-        setupGenreLabel()
     }
     
     override func prepareForReuse() {
@@ -58,7 +64,6 @@ final class PopularFilmCell: UICollectionViewCell {
         imageView.sd_cancelCurrentImageLoad()
         imageView.image = nil
         titleLabel.text = nil
-        genreLabel.text = nil
         raitingView.configureRaiting(with: 0)
     }
     
@@ -69,8 +74,8 @@ final class PopularFilmCell: UICollectionViewCell {
     
     // MARK: – Setup's
     private func setupUI() {
-        addSubviews(imageView, titleLabel, genreLabel)
-        imageView.addSubview(raitingView)
+        contentView.addSubviews(imageView, titleLabel)
+        imageView.addSubviews(raitingView, favoriteView)
     }
     
     private func setupImageView() {
@@ -87,6 +92,14 @@ final class PopularFilmCell: UICollectionViewCell {
             .wrapContent()
     }
     
+    private func setupFavoriteView() {
+        favoriteView.setNeedsLayout()
+        favoriteView.layoutIfNeeded()
+        favoriteView.pin
+            .top(8)
+            .right(8)
+    }
+    
     private func setupTitleLabel() {
         titleLabel.pin
             .below(of: imageView)
@@ -96,19 +109,11 @@ final class PopularFilmCell: UICollectionViewCell {
             .sizeToFit(.width)
     }
     
-    private func setupGenreLabel() {
-        genreLabel.pin
-            .below(of: titleLabel)
-            .horizontally()
-            .marginTop(4)
-            .sizeToFit(.width)
-    }
-    
     // MARK: – Set UI
     func setUI(with model: PopularFilmsModel) {
         raitingView.configureRaiting(with: model.voteAverage)
         titleLabel.text = model.title
-        genreLabel.text = model.overview
+        favoriteView.update(isSelected: model.isFavorite)
         
         let imagePath = model.posterPath
         let url = URL(string: "https://image.tmdb.org/t/p/w500/\(imagePath)")
@@ -118,5 +123,9 @@ final class PopularFilmCell: UICollectionViewCell {
             guard let self else { return }
             self.imageView.image = image
         }
+    }
+
+    func setFavoriteSelected(_ isSelected: Bool) {
+        favoriteView.update(isSelected: isSelected)
     }
 }

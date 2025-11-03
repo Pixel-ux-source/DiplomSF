@@ -28,5 +28,7 @@ final class MainCollection: UICollectionView {
     // MARK: – Configure View
     private func configureView() {
         backgroundColor = .systemBackground
+        showsHorizontalScrollIndicator = false
+        showsVerticalScrollIndicator = false
     }
 }

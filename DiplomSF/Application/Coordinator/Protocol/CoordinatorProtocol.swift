@@ -10,4 +10,5 @@ import UIKit
 protocol CoordinatorProtocol: AnyObject {
     func start()
     func openDetailScreen(for model: ModelsProtocol)
+    func openDetailImage(for images: [String], index: IndexPath)
 }

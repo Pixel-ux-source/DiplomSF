@@ -10,6 +10,7 @@ import SDWebImage
 
 final class MainDataSource: NSObject, UICollectionViewDataSource {
     var popularFilmsModel: [PopularFilmsModel] = []
+    var presenter: MainPresenterProtocol!
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         SectionMainCV.allCases.count
@@ -27,7 +28,10 @@ final class MainDataSource: NSObject, UICollectionViewDataSource {
         
         let model = popularFilmsModel[indexPath.item]
         cell.setUI(with: model)
-
+        cell.onFavoriteButtonTapped = { [weak self] in
+            guard let self else { return }
+            self.presenter.toggleFavorite(index: model.id)
+        }
         return cell
     }
     

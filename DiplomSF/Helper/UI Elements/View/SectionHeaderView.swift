@@ -17,10 +17,12 @@ final class SectionHeaderView: UICollectionReusableView {
     // MARK: – UI Element's
     private lazy var titleLabel: UILabel = {
        let label = UILabel()
-        label.font = .systemFont(ofSize: 28, weight: .bold)
+        label.font = .systemFont(ofSize: 26, weight: .semibold)
         label.textColor = .label
         return label
     }()
+    
+    private var leftInset: CGFloat = 0
     
     // MARK: – Initializate
     override init(frame: CGRect = .zero) {
@@ -39,15 +41,17 @@ final class SectionHeaderView: UICollectionReusableView {
     }
     
     // MARK: – Configuration's
-    func configure(with text: String) {
+    func configure(with text: String, insetLeft: CGFloat = 0) {
         titleLabel.text = text
+        leftInset = insetLeft
     }
     
     // MARK: – Setup's
     private func setupTitleLabel() {
         titleLabel.pin
             .top(24)
-            .horizontally(8)
+            .left(leftInset)
+            .right()
             .height(28)
     }
 }
