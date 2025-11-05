@@ -10,6 +10,17 @@ import XCTest
 
 final class DiplomSFTests: XCTestCase {
 
+    // MARK: - Simple Unit Tests
+    func testAPIEndpointPopularURL_isCorrect() {
+        let endpoint = APIEndpoint.getPopular(language: "ru-RU", page: 1)
+        XCTAssertEqual(endpoint.url?.absoluteString, "https://api.themoviedb.org/3/movie/popular")
+    }
+
+    func testUserSettings_isFavoriteDefaultsToFalse() {
+        let settings = UserSettings()
+        XCTAssertFalse(settings.isFavorite(9999))
+    }
+
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }

@@ -31,6 +31,27 @@ final class DiplomSFUITests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
+    // MARK: - Simple UI Tests
+    @MainActor
+    func testMainCollectionExists() throws {
+        let app = XCUIApplication()
+        app.launch()
+        let collection = app.collectionViews.firstMatch
+        XCTAssertTrue(collection.waitForExistence(timeout: 5))
+    }
+
+    @MainActor
+    func testPullToRefreshGesture() throws {
+        let app = XCUIApplication()
+        app.launch()
+        let collection = app.collectionViews.firstMatch
+        XCTAssertTrue(collection.waitForExistence(timeout: 5))
+
+        let start = collection.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2))
+        let finish = collection.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
+        start.press(forDuration: 0, thenDragTo: finish)
+    }
+
     @MainActor
     func testLaunchPerformance() throws {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {

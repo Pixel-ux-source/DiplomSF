@@ -10,6 +10,7 @@
 		1F5C88272E781988001DF926 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 1F5C88262E781988001DF926 /* SDWebImage */; };
 		1F9812822E675D6500658B88 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 1F9812812E675D6500658B88 /* Alamofire */; };
 		1F9815A92E678CFA00658B88 /* PinLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 1F9815A82E678CFA00658B88 /* PinLayout */; };
+		1FCE1E322EB9104800BC0F11 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 1FCE1E312EB9104800BC0F11 /* SkeletonView */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FCE1E322EB9104800BC0F11 /* SkeletonView in Frameworks */,
 				1F5C88272E781988001DF926 /* SDWebImage in Frameworks */,
 				1F9815A92E678CFA00658B88 /* PinLayout in Frameworks */,
 				1F9812822E675D6500658B88 /* Alamofire in Frameworks */,
@@ -137,6 +139,7 @@
 				1F9812812E675D6500658B88 /* Alamofire */,
 				1F9815A82E678CFA00658B88 /* PinLayout */,
 				1F5C88262E781988001DF926 /* SDWebImage */,
+				1FCE1E312EB9104800BC0F11 /* SkeletonView */,
 			);
 			productName = DiplomSF;
 			productReference = 1F9811D52E66E07400658B88 /* DiplomSF.app */;
@@ -224,6 +227,7 @@
 				1F9812802E675D6500658B88 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				1F9815A72E678CFA00658B88 /* XCRemoteSwiftPackageReference "PinLayout" */,
 				1F5C88252E781988001DF926 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				1FCE1E302EB9104800BC0F11 /* XCRemoteSwiftPackageReference "SkeletonView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1F9811D62E66E07400658B88 /* Products */;
@@ -604,6 +608,14 @@
 				minimumVersion = 1.10.6;
 			};
 		};
+		1FCE1E302EB9104800BC0F11 /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Juanpe/SkeletonView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.31.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -621,6 +633,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1F9815A72E678CFA00658B88 /* XCRemoteSwiftPackageReference "PinLayout" */;
 			productName = PinLayout;
+		};
+		1FCE1E312EB9104800BC0F11 /* SkeletonView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1FCE1E302EB9104800BC0F11 /* XCRemoteSwiftPackageReference "SkeletonView" */;
+			productName = SkeletonView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -7,8 +7,6 @@
 
 import UIKit
 
-// Добавить на главной странице две кнопки – избранное и смену языка ENG/RUS с алертом на просьбу перезапустить приложение для смены языка
-// Опционально добавить Skeleton
 
 final class DetailDataSource: NSObject, UICollectionViewDataSource {
     var model: DetailModel?
